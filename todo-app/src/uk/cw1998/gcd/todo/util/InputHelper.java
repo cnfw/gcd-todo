@@ -17,7 +17,7 @@ public class InputHelper {
         System.out.println("Choose from one of these options:");
 
         for (int i = 0; i < options.length; i++)
-            System.out.println("[" + (i + 1) + "]. " + options[i]);
+            System.out.println("[" + (i + 1) + "] " + options[i]);
 
         if (options.length == 1)
             return 1;
@@ -48,6 +48,31 @@ public class InputHelper {
 
         return choice;
 
+    }
+
+    public String getString(String promptToUser) {
+        return getString(promptToUser, false);
+    }
+
+    public String getString(String promptToUser, boolean required) {
+        System.out.println(promptToUser);
+        System.out.print((required) ? ">* " : "> ");
+
+        String output;
+
+        // Keep looping until a valid input is entered
+        while(true) {
+            output = scanner.nextLine();
+
+            if (output.equals("") && required) {
+                System.out.print("This is required, please enter a value.\n> ");
+                continue;
+            } else if (output.equals("")) {
+                System.out.print("Are you sure? Press enter again to leave input blank.\n> ");
+                return scanner.nextLine();
+            } else
+                return output;
+        }
     }
 
 }

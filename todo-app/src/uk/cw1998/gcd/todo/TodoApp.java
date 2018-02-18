@@ -1,7 +1,10 @@
 package uk.cw1998.gcd.todo;
 
 import uk.cw1998.gcd.todo.items.BaseTodo;
+import uk.cw1998.gcd.todo.items.ListTodo;
+import uk.cw1998.gcd.todo.items.NormalTodo;
 import uk.cw1998.gcd.todo.util.InputHelper;
+import uk.cw1998.gcd.todo.util.XMLHelper;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -11,7 +14,8 @@ public class TodoApp {
     private static InputHelper inputHelper;
 
     private static ArrayList<BaseTodo> todoItems;
-    private static String[] mainMenuOptions = new String[]{"New Todo", "Show a Todo List", "Manage Lists", "Exit"};
+    private static String[] mainMenuOptions = new String[]{"New Todo", "Show Todo's", "Show Completed Todo's", "Exit"};
+    private static String[] todoTypes = new String[]{"Normal Todo", "List Todo", "<- Back"};
 
     public static void main(String[] args) {
         inputHelper = new InputHelper(new Scanner(System.in));
@@ -19,23 +23,57 @@ public class TodoApp {
 
         printStartup();
 
+        XMLHelper.getTodoArray();
+
         // Start a loop that will get a main menu choice to start off
         for (int mainMenuChoice = getMainMenuChoice(); mainMenuChoice != mainMenuOptions.length; mainMenuChoice = getMainMenuChoice()) {
-            switch (mainMenuChoice) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    System.out.println("Goodbye!");
-                    cleanupAndExit();
-                    break;
-                default:
-            }
+            processMainMenuChoice(mainMenuChoice);
         }
 
+        System.out.println("Goodbye!");
+        cleanupAndExit();
+    }
+
+    private static BaseTodo newTodo() {
+        switch (inputHelper.buildMenu("Choose a type of Todo", todoTypes)) {
+            case 1:
+                return newNormalTodo();
+            case 2:
+                return newListTodo();
+            default:
+        }
+        return null;
+    }
+
+    private static NormalTodo newNormalTodo() {
+        String title = inputHelper.getString("Enter a title", true);
+        String description = inputHelper.getString("Enter a description", false);
+
+        return new NormalTodo(title, description);
+    }
+
+    private static ListTodo newListTodo() {
+        String title = inputHelper.getString("Enter a title", true);
+        String description = inputHelper.getString("Enter a description", false);
+
+        return new ListTodo(title, description);
+    }
+
+    private static void processMainMenuChoice(int mainMenuChoice) {
+        switch (mainMenuChoice) {
+            case 1: // New
+                BaseTodo todoToAdd = newTodo();
+                if (todoToAdd == null)
+                    return;
+                else
+                    todoItems.add(todoToAdd);
+                break;
+            case 2: // Show (uncompleted)
+                break;
+            case 3: // Show completed
+                break;
+            default:
+        }
     }
 
     private static int getMainMenuChoice() {
