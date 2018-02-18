@@ -1,7 +1,7 @@
 package uk.cw1998.gcd.todo.items;
 
 
-abstract class BaseTodo {
+public abstract class BaseTodo {
 
     private int id;
     String title, description;
