@@ -21,9 +21,8 @@ public class TodoApp {
         inputHelper = new InputHelper(new Scanner(System.in));
         todoItems = new ArrayList<>();
 
+        todoItems = XMLHelper.getTodoArray();
         printStartup();
-
-        XMLHelper.getTodoArray();
 
         // Start a loop that will get a main menu choice to start off
         for (int mainMenuChoice = getMainMenuChoice(); mainMenuChoice != mainMenuOptions.length; mainMenuChoice = getMainMenuChoice()) {
@@ -69,6 +68,8 @@ public class TodoApp {
                     todoItems.add(todoToAdd);
                 break;
             case 2: // Show (uncompleted)
+                int todoChoice = getTodoChoice(true);
+
                 break;
             case 3: // Show completed
                 break;
@@ -78,6 +79,22 @@ public class TodoApp {
 
     private static int getMainMenuChoice() {
         return inputHelper.buildMenu("Main Menu", mainMenuOptions);
+    }
+
+    private static int getTodoChoice(boolean completed) {
+        return inputHelper.buildMenu("Choose a Todo", getListOfTodoTitles(completed));
+    }
+
+    private static String[] getListOfTodoTitles(boolean completed) {
+        ArrayList<String> temp = new ArrayList<>();
+        for (BaseTodo todo : todoItems)
+            if (todo.isCompleted())
+                temp.add(todo.getTitle());
+
+        String[] output = new String[temp.size()];
+        output = temp.toArray(output);
+
+        return output;
     }
 
     private static void printStartup() {
