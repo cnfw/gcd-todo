@@ -171,7 +171,7 @@ public class TodoApp {
     }
 
     private static void cleanupAndExit() {
-
+        XMLHelper.writeTodoArrayToFile(todoItems);
         System.exit(0);
     }
 }
