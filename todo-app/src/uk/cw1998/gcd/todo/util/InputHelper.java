@@ -11,6 +11,9 @@ public class InputHelper {
     }
 
     public int buildMenu(String title, String[] options) {
+        if (options.length == 0)
+            return -1;
+
         if(!title.equals(""))
             System.out.println("===== " + title.toUpperCase() + " =====");
 
