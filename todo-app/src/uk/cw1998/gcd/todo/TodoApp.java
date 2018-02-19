@@ -3,6 +3,7 @@ package uk.cw1998.gcd.todo;
 import uk.cw1998.gcd.todo.items.BaseTodo;
 import uk.cw1998.gcd.todo.items.ListTodo;
 import uk.cw1998.gcd.todo.items.NormalTodo;
+import uk.cw1998.gcd.todo.items.Priority;
 import uk.cw1998.gcd.todo.util.InputHelper;
 import uk.cw1998.gcd.todo.util.XMLHelper;
 
@@ -17,6 +18,7 @@ public class TodoApp {
     private static String[] mainMenuOptions = new String[]{"New Todo", "Show Todo's", "Show Completed Todo's", "Exit"};
     private static String[] todoTypes = new String[]{"Normal Todo", "List Todo", "<- Back"};
     private static String[] normalTodoOptions = new String[]{"Toggle Completed", "Set priority", "<- Back"};
+    private static String[] priorityOptions = new String[]{Priority.HIGH.getPriority(), Priority.MEDIUM.getPriority(), Priority.LOW.getPriority(), Priority.NONE.getPriority(), "<- Back"};
 
     public static void main(String[] args) {
         inputHelper = new InputHelper(new Scanner(System.in));
@@ -88,18 +90,52 @@ public class TodoApp {
 
     private static void processTodoChoice(boolean fromCompletedList) {
         int todoChoice = getTodoChoice(fromCompletedList) - 1;
+        if (todoChoice < 0) {
+            System.out.println("There are no Todo's in this list. Returning to main menu.");
+            return;
+        }
+
 
         ArrayList<BaseTodo> todoItems = getArrayListOfTodos(fromCompletedList);
         BaseTodo todo = getArrayListOfTodos(fromCompletedList).get(todoChoice);
+
+        printTodoInformation(todo);
+
+        if (todo instanceof NormalTodo)
+            for (int todoOptionChoice = getNormlTodoOption(); todoOptionChoice != normalTodoOptions.length; todoOptionChoice = getNormlTodoOption()) {
+                switch (todoOptionChoice) {
+                    case 1: // Toggle completed
+                        System.out.println(((todo.isCompleted()) ? "Marking uncompleted" : "Marking completed"));
+
+                        todo.toggleCompleted();
+
+                        break;
+                    case 2: // Set priority
+                        System.out.println("Current Priority: " + ((NormalTodo) todo).getPriority().getPriority());
+
+                        int priorityChoice = inputHelper.buildMenu("Choose a priority", priorityOptions);
+                        if (priorityChoice == priorityOptions.length) // If back is chosen
+                            continue;
+                        else
+                            ((NormalTodo) todo).setPriority(Priority.values()[priorityChoice - 1]);
+
+                        break;
+                }
+                printTodoInformation(todo);
+            }
+    }
+
+    private static void printTodoInformation(BaseTodo todo) {
         System.out.println("Selected Todo: " + todo.getTitle());
         System.out.println("Description: " + todo.getDescription());
         System.out.println("Completed: " + ((todo.isCompleted()) ? "Yes" : "No"));
-        switch (inputHelper.buildMenu("Select an option for this Todo", normalTodoOptions)) {
-            case 1: // Toggle completed
-                System.out.println(((todo.isCompleted()) ? "Marking uncompleted" : "Marking completed"));
-                todo.toggleCompleted();
-                break;
-        }
+
+        if (todo instanceof NormalTodo)
+            System.out.println("Priority: " + ((NormalTodo) todo).getPriority().getPriority());
+    }
+
+    private static int getNormlTodoOption() {
+        return inputHelper.buildMenu("Select an option for this Todo", normalTodoOptions);
     }
 
     private static String[] getListOfTodoTitles(boolean completed) {
