@@ -16,6 +16,7 @@ public class TodoApp {
     private static ArrayList<BaseTodo> todoItems;
     private static String[] mainMenuOptions = new String[]{"New Todo", "Show Todo's", "Show Completed Todo's", "Exit"};
     private static String[] todoTypes = new String[]{"Normal Todo", "List Todo", "<- Back"};
+    private static String[] normalTodoOptions = new String[]{"Toggle Completed", "Set priority", "<- Back"};
 
     public static void main(String[] args) {
         inputHelper = new InputHelper(new Scanner(System.in));
@@ -68,10 +69,10 @@ public class TodoApp {
                     todoItems.add(todoToAdd);
                 break;
             case 2: // Show (uncompleted)
-                int todoChoice = getTodoChoice(true);
-
+                processTodoChoice(false);
                 break;
             case 3: // Show completed
+                processTodoChoice(true);
                 break;
             default:
         }
@@ -85,16 +86,40 @@ public class TodoApp {
         return inputHelper.buildMenu("Choose a Todo", getListOfTodoTitles(completed));
     }
 
+    private static void processTodoChoice(boolean fromCompletedList) {
+        int todoChoice = getTodoChoice(fromCompletedList) - 1;
+
+        ArrayList<BaseTodo> todoItems = getArrayListOfTodos(fromCompletedList);
+        BaseTodo todo = getArrayListOfTodos(fromCompletedList).get(todoChoice);
+        System.out.println("Selected Todo: " + todo.getTitle());
+        System.out.println("Description: " + todo.getDescription());
+        System.out.println("Completed: " + ((todo.isCompleted()) ? "Yes" : "No"));
+        switch (inputHelper.buildMenu("Select an option for this Todo", normalTodoOptions)) {
+            case 1: // Toggle completed
+                System.out.println(((todo.isCompleted()) ? "Marking uncompleted" : "Marking completed"));
+                todo.toggleCompleted();
+                break;
+        }
+    }
+
     private static String[] getListOfTodoTitles(boolean completed) {
         ArrayList<String> temp = new ArrayList<>();
-        for (BaseTodo todo : todoItems)
-            if (todo.isCompleted())
-                temp.add(todo.getTitle());
+        for (BaseTodo todo : getArrayListOfTodos(completed))
+            temp.add(todo.getTitle());
 
         String[] output = new String[temp.size()];
         output = temp.toArray(output);
 
         return output;
+    }
+
+    private static ArrayList<BaseTodo> getArrayListOfTodos(boolean completed) {
+        ArrayList<BaseTodo> temp = new ArrayList<>();
+        for (BaseTodo todo : todoItems)
+            if (todo.isCompleted() == completed)
+                temp.add(todo);
+
+        return temp;
     }
 
     private static void printStartup() {

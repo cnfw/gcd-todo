@@ -14,9 +14,10 @@ import java.util.ArrayList;
 
 public class XMLHelper {
 
-    private static ArrayList<BaseTodo> todoArray = new ArrayList<>();
+    private static ArrayList<BaseTodo> todoArray;
 
     public static ArrayList<BaseTodo> getTodoArray() {
+        todoArray = new ArrayList<>();
         try {
             File xmlFile = new File("C:\\Users\\hp\\IdeaProjects\\gcd-todo\\gcd-todo.xml");
             DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
@@ -30,7 +31,6 @@ public class XMLHelper {
             // TODO Create new file and try again
         } catch (Exception e) {
             System.err.println("Something went wrong loading your saved Todo's. Do you have the correct permissions?");
-            System.err.println(e);
             System.exit(1);
         }
 
