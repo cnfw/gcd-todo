@@ -1,5 +1,6 @@
 package uk.cw1998.gcd.todo.util;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class InputHelper {
@@ -75,6 +76,19 @@ public class InputHelper {
                 return scanner.nextLine();
             } else
                 return output;
+        }
+    }
+
+    public static LocalDate inputDate(String dateEntered) {
+        String[] splitDate = dateEntered.split("/|-");
+        try {
+            int day = Integer.parseInt(splitDate[0]);
+            int month = Integer.parseInt(splitDate[1]);
+            int year = Integer.parseInt(splitDate[2]);
+
+            return LocalDate.of(year, month, day);
+        } catch (Exception e) {
+            return null;
         }
     }
 

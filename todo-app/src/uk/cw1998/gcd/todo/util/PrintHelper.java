@@ -20,5 +20,6 @@ public class PrintHelper {
         System.out.println("Description: " + todo.getDescription());
         System.out.println("Completed: " + ((todo.isCompleted()) ? "Yes" : "No"));
         System.out.println("Priority: " + todo.getPriority().getPriority());
+        System.out.println("Due date: " + todo.getUKDate());
     }
 }

@@ -7,6 +7,7 @@ import uk.cw1998.gcd.todo.util.InputHelper;
 import uk.cw1998.gcd.todo.util.ListHelper;
 import uk.cw1998.gcd.todo.util.XMLHelper;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -16,17 +17,19 @@ import static uk.cw1998.gcd.todo.util.PrintHelper.printTodoInformation;
 public class TodoApp {
 
     private static InputHelper inputHelper;
+    private static XMLHelper xmlHelper;
 
     private static ArrayList<BaseTodo> todoItems;
-    private static String[] mainMenuOptions = new String[]{"New Todo", "Show Todo's", "Show completed Todo's", "Exit"};
+    private static String[] mainMenuOptions = new String[]{"New Todo", "Show due Todo's", "Show Todo's", "Show completed Todo's", "Exit"};
     private static String[] todoTypes = new String[]{"Normal Todo", "List Todo", "<- Back"};
-    private static String[] normalTodoOptions = new String[]{"Toggle cmpleted", "Set priority", "<- Back"};
-    private static String[] listTodoOptions = new String[]{"Toggle completed", "Set priority", "Add item to checklist", "Show checklist", "<- Back"};
+    private static String[] normalTodoOptions = new String[]{"Toggle completed", "Set priority", "Set due date", "<- Back"};
+    private static String[] listTodoOptions = new String[]{"Toggle completed", "Set priority", "Set due date", "Add item to checklist", "Show checklist", "<- Back"};
     private static String[] priorityOptions = new String[]{Priority.HIGH.getPriority(), Priority.MEDIUM.getPriority(), Priority.LOW.getPriority(), Priority.NONE.getPriority(), "<- Back"};
 
     public static void main(String[] args) {
+        xmlHelper = new XMLHelper("C:\\Users\\Christopher\\IdeaProjects\\gcd-todo\\gcd-todo.xml");
         inputHelper = new InputHelper(new Scanner(System.in));
-        todoItems = XMLHelper.getTodoArray();
+        todoItems = xmlHelper.getTodoArray();
 
         printStartup();
 
@@ -71,10 +74,13 @@ public class TodoApp {
                     showTodo(todoToAdd);
                 }
                 break;
-            case 2: // Show (uncompleted)
+            case 2:
+                processTodoChoice(ListHelper.getArrayListOfDueTodoItems(todoItems));
+                break;
+            case 3: // Show (uncompleted)
                 processTodoChoice(ListHelper.getArrayListOfTodoItems(todoItems,false));
                 break;
-            case 3: // Show completed
+            case 4: // Show completed
                 processTodoChoice(ListHelper.getArrayListOfTodoItems(todoItems,true));
                 break;
             default:
@@ -121,10 +127,19 @@ public class TodoApp {
                     else
                         todo.setPriority(Priority.values()[priorityChoice - 1]);
                     break;
-                case 3: // Add new (if it is a ListTodo)
+                case 3: // Set due date
+                    LocalDate date;
+                    do {
+                        String dateInput = inputHelper.getString("Enter a date in the format DD-MM-YYYY", true);
+                        date = InputHelper.inputDate(dateInput);
+                    } while (date == null);
+                    todo.setDueDate(date);
+                    System.out.println("New due date: " + todo.getDueDate().toString());
+                    break;
+                case 4: // Add new (if it is a ListTodo)
                     if (todo instanceof ListTodo)
                         ((ListTodo) todo).addToCheckList(newNormalTodo());
-                case 4: // Show checklist (if it is a ListTodo)
+                case 5: // Show checklist (if it is a ListTodo)
                     if (todo instanceof  ListTodo)
                         processTodoChoice(((ListTodo) todo).getChecklist());
             }
@@ -138,7 +153,7 @@ public class TodoApp {
 
     private static void cleanupAndExit() {
         System.out.println("Saving Todo's");
-        XMLHelper.writeTodoArrayToFile(todoItems);
+        xmlHelper.writeTodoArrayToFile(todoItems);
         System.out.println("Todo's saved.");
         System.exit(0);
     }

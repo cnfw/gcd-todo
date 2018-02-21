@@ -19,6 +19,15 @@ public class ListHelper {
         return output;
     }
 
+    public static ArrayList<BaseTodo> getArrayListOfDueTodoItems(ArrayList<BaseTodo> todoItems) {
+        ArrayList<BaseTodo> temp = new ArrayList<>();
+        for (BaseTodo todo : todoItems)
+            if (!todo.isCompleted() && todo.isDue())
+                temp.add(todo);
+
+        return temp;
+    }
+
     public static ArrayList<BaseTodo> getArrayListOfTodoItems(ArrayList<BaseTodo> todoItems, boolean completed) {
         ArrayList<BaseTodo> temp = new ArrayList<>();
         for (BaseTodo todo : todoItems)
