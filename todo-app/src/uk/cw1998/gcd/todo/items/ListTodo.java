@@ -29,6 +29,11 @@ public class ListTodo extends BaseTodo {
         return checklist;
     }
 
+    /**
+     * Get an {@link ArrayList} of {@link BaseTodo} objects from the {@link #checklist} with the status matching
+     * {@param completed} @param completed status that a {@link BaseTodo} object must have to be included in the output
+     * @return list of {@link BaseTodo} objects
+     */
     public ArrayList<BaseTodo> getChecklistItems(boolean completed) {
         ArrayList<BaseTodo> temp = new ArrayList<>();
         for (BaseTodo todo : checklist)

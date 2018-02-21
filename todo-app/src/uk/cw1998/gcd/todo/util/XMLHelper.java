@@ -43,6 +43,11 @@ public class XMLHelper {
         }
     }
 
+    /**
+     * Get an {@link ArrayList} made of {@link BaseTodo} objects that are stored in the object's XML file
+     * @return ArrayList of BaseTodo objects
+     * @see #traverseAndAddTodos(NodeList)
+     */
     public ArrayList<BaseTodo> getTodoArray() {
         todoArray.clear();
         try {
@@ -59,6 +64,11 @@ public class XMLHelper {
         return todoArray;
     }
 
+    /**
+     * Stores the specified {@link ArrayList} of {@link BaseTodo} objects to the object's XML file
+     * @param todoArray from the application - typically before closing
+     * @see #buildElement(Document, BaseTodo)
+     */
     public void writeTodoArrayToFile(ArrayList<BaseTodo> todoArray) {
         try {
             Document document = builder.newDocument();
@@ -81,6 +91,14 @@ public class XMLHelper {
         }
     }
 
+    /**
+     * Parses a {@link BaseTodo} object into an Element suitable for storage in a {@link NodeList}
+     * If {@link BaseTodo} is a {@link ListTodo} object, recursively call to add it's checklist
+     * @param document document to create element with
+     * @param todo the object to be parsed
+     * @return resulting {@link Element}
+     * @see #writeTodoArrayToFile(ArrayList)
+     */
     private static Element buildElement(Document document, BaseTodo todo) {
         Element newTodo = document.createElement(todo.getTagName());
 
@@ -97,6 +115,11 @@ public class XMLHelper {
         return newTodo;
     }
 
+    /**
+     * Iterates through a provided {@link NodeList} and adds parsed {@link BaseTodo} objects to the object's
+     * {@link XMLHelper#getTodoArray() todoList}
+     * @param nodeList list to be added
+     */
     private void traverseAndAddTodos(NodeList nodeList) {
         for (int i = 0; i < nodeList.getLength(); i++)
             if(nodeList.item(i).getNodeType() == Node.ELEMENT_NODE) // Ensure text nodes aren't added
@@ -111,6 +134,11 @@ public class XMLHelper {
                 }
     }
 
+    /**
+     * Parses a {@link Node} into a {@link BaseTodo} object
+     * @param node item to parse
+     * @return object
+     */
     private static BaseTodo parseNormalTodo(Node node) {
         String title = node.getAttributes().getNamedItem("title").getNodeValue();
         String description = node.getAttributes().getNamedItem("description").getNodeValue();
@@ -120,6 +148,12 @@ public class XMLHelper {
         return new BaseTodo(title, description, completed, dueDate);
     }
 
+    /**
+     * Parses a {@link Node} into a {@link ListTodo} object
+     * @param node item to parse
+     * @return object
+     * @see #parseNormalTodo(Node) 
+     */
     private static ListTodo parseListTodo(Node node) {
         ListTodo newListTodo = new ListTodo(parseNormalTodo(node));
 

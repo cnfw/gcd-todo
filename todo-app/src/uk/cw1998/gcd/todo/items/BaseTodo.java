@@ -42,6 +42,10 @@ public class BaseTodo {
         return completed;
     }
 
+    /**
+     * Compares the system's current time with the time stored with this object
+     * @return false if object has no due date or if due date is in the future, otherwise true
+     */
     public boolean isDue() {
         LocalDate now = LocalDate.now();
         return dueDate != null && (dueDate.isBefore(now));
@@ -55,6 +59,10 @@ public class BaseTodo {
         description = newDescription;
     }
 
+    /**
+     * Swap {@link #completed completed} status
+     * @return new completed status
+     */
     public boolean toggleCompleted() {
         completed = !completed;
         return completed;
@@ -68,6 +76,10 @@ public class BaseTodo {
         return dueDate;
     }
 
+    /**
+     * Gets a string of the current date in UK format if it exists
+     * @return current {@link #dueDate due date} in UK format if it exists
+     */
     public String getUKDate() {
         if (dueDate == null)
             return "No Due Date";
@@ -85,5 +97,4 @@ public class BaseTodo {
     public String getTagName() {
         return tagName;
     }
-
 }

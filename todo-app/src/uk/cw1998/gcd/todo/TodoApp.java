@@ -27,7 +27,10 @@ public class TodoApp {
     private static String[] priorityOptions = new String[]{Priority.HIGH.getPriority(), Priority.MEDIUM.getPriority(), Priority.LOW.getPriority(), Priority.NONE.getPriority(), "<- Back"};
 
     public static void main(String[] args) {
-        xmlHelper = new XMLHelper("C:\\Users\\Christopher\\IdeaProjects\\gcd-todo\\gcd-todo.xml");
+        /*
+         * CHANGE FILE PATH TO EXAMPLE XML FILE PROVIDED IN THE REPOSITORY
+         */
+        xmlHelper = new XMLHelper(/*Add full path to XML here */);
         inputHelper = new InputHelper(new Scanner(System.in));
         todoItems = xmlHelper.getTodoArray();
 
@@ -74,10 +77,10 @@ public class TodoApp {
                     showTodo(todoToAdd);
                 }
                 break;
-            case 2:
+            case 2: // Show due and uncompleted
                 processTodoChoice(ListHelper.getArrayListOfDueTodoItems(todoItems));
                 break;
-            case 3: // Show (uncompleted)
+            case 3: // Show uncompleted
                 processTodoChoice(ListHelper.getArrayListOfTodoItems(todoItems,false));
                 break;
             case 4: // Show completed
@@ -104,7 +107,7 @@ public class TodoApp {
         } else if (todoChoice == listOfTodoTitles.length)
             return;
 
-        BaseTodo todo = todoItems.get(todoChoice - 1);
+        BaseTodo todo = todoItems.get(todoChoice - 1); // inputHelper doesn't start from 0 (to be user friendly)
 
         showTodo(todo);
     }

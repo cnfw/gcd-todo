@@ -11,6 +11,13 @@ public class InputHelper {
         this.scanner = scanner;
     }
 
+    /**
+     * Will build up a menu, accept input and return the number of the option chosen
+     * Returns the first option automatically if there is only one option provided
+     * @param title prompt that gets shown to the user before they choose an option
+     * @param options the list of available options
+     * @return the option chosen
+     */
     public int buildMenu(String title, String[] options) {
         if (options.length == 0)
             return -1;
@@ -51,13 +58,24 @@ public class InputHelper {
         scanner.nextLine();
 
         return choice;
-
     }
 
+    /**
+     * @see #getString(String, boolean)
+     * @param promptToUser prompt to show to user (usually an instruction)
+     * @return string that user entered
+     */
     public String getString(String promptToUser) {
         return getString(promptToUser, false);
     }
 
+    /**
+     * Gets text from the console that is entered. If required, blank input won't be accepted
+     * If not required, there will be a prompt to ensure that an empty string is desired
+     * @param promptToUser prompt to show to user (usually an instruction)
+     * @param required flag to determine if the string returned should be non-empty
+     * @return string that the user entered
+     */
     public String getString(String promptToUser, boolean required) {
         System.out.println(promptToUser);
         System.out.print((required) ? ">* " : "> ");
@@ -79,6 +97,13 @@ public class InputHelper {
         }
     }
 
+    /**
+     * Parse a UK date string to a LocalDate object
+     * It can split dates on / or -
+     * EGs of valid dates "21/02/2018", "21-02-2018", "21-2-2018"
+     * @param dateEntered date to parse
+     * @return object matching the date entered or null if the input was invalid
+     */
     public static LocalDate inputDate(String dateEntered) {
         String[] splitDate = dateEntered.split("/|-");
         try {
@@ -87,9 +112,8 @@ public class InputHelper {
             int year = Integer.parseInt(splitDate[2]);
 
             return LocalDate.of(year, month, day);
-        } catch (Exception e) {
+        } catch (Exception e) { // Will be caught if the date is invalid in any way
             return null;
         }
     }
-
 }

@@ -1,6 +1,7 @@
 package uk.cw1998.gcd.todo.util;
 
 import uk.cw1998.gcd.todo.items.BaseTodo;
+import uk.cw1998.gcd.todo.items.ListTodo;
 
 public class PrintHelper {
     public static void printStartup() {
@@ -21,5 +22,8 @@ public class PrintHelper {
         System.out.println("Completed: " + ((todo.isCompleted()) ? "Yes" : "No"));
         System.out.println("Priority: " + todo.getPriority().getPriority());
         System.out.println("Due date: " + todo.getUKDate());
+
+        if (todo instanceof ListTodo)
+            System.out.println("Number of checklist items: " + ((ListTodo) todo).getChecklist().size());
     }
 }
