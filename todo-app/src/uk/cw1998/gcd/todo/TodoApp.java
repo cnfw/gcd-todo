@@ -19,18 +19,20 @@ public class TodoApp {
     private static InputHelper inputHelper;
     private static XMLHelper xmlHelper;
 
+    public static final String BACK = "<- Back";
+
     private static ArrayList<BaseTodo> todoItems;
     private static String[] mainMenuOptions = new String[]{"New Todo", "Show due Todo's", "Show Todo's", "Show completed Todo's", "Exit"};
-    private static String[] todoTypes = new String[]{"Normal Todo", "List Todo", "<- Back"};
-    private static String[] normalTodoOptions = new String[]{"Toggle completed", "Set priority", "Set due date", "<- Back"};
-    private static String[] listTodoOptions = new String[]{"Toggle completed", "Set priority", "Set due date", "Add item to checklist", "Show checklist", "<- Back"};
-    private static String[] priorityOptions = new String[]{Priority.HIGH.getPriority(), Priority.MEDIUM.getPriority(), Priority.LOW.getPriority(), Priority.NONE.getPriority(), "<- Back"};
+    private static String[] todoTypes = new String[]{"Normal Todo", "List Todo", BACK};
+    private static String[] normalTodoOptions = new String[]{"Toggle completed", "Set priority", "Set due date", BACK};
+    private static String[] listTodoOptions = new String[]{"Toggle completed", "Set priority", "Set due date", "Add item to checklist", "Show checklist", BACK};
+    private static String[] priorityOptions = new String[]{Priority.HIGH.getPriority(), Priority.MEDIUM.getPriority(), Priority.LOW.getPriority(), Priority.NONE.getPriority(), BACK};
 
     public static void main(String[] args) {
         /*
          * CHANGE FILE PATH TO EXAMPLE XML FILE PROVIDED IN THE REPOSITORY
          */
-        xmlHelper = new XMLHelper(/*Add full path to XML here */);
+        xmlHelper = new XMLHelper("C:\\Users\\hp\\IdeaProjects\\gcd-todo\\gcd-todo.xml");
         inputHelper = new InputHelper(new Scanner(System.in));
         todoItems = xmlHelper.getTodoArray();
 
@@ -117,36 +119,43 @@ public class TodoApp {
         String[] optionsList = (todo instanceof ListTodo) ? listTodoOptions : normalTodoOptions;
 
         for (int todoOptionChoice = getTodoOption(optionsList); todoOptionChoice != optionsList.length; todoOptionChoice = getTodoOption(optionsList)) {
-            switch (todoOptionChoice) {
-                case 1: // Toggle completed
-                    System.out.println(((todo.isCompleted()) ? "Marking uncompleted" : "Marking completed"));
-                    todo.toggleCompleted();
-                    break;
-                case 2: // Set priority
-                    System.out.println("Current Priority: " + todo.getPriority().getPriority());
-                    int priorityChoice = inputHelper.buildMenu("Choose a priority", priorityOptions);
-                    if (priorityChoice == priorityOptions.length) // If back is chosen
-                        continue;
-                    else
-                        todo.setPriority(Priority.values()[priorityChoice - 1]);
-                    break;
-                case 3: // Set due date
-                    LocalDate date;
-                    do {
-                        String dateInput = inputHelper.getString("Enter a date in the format DD-MM-YYYY", true);
-                        date = InputHelper.inputDate(dateInput);
-                    } while (date == null);
-                    todo.setDueDate(date);
-                    System.out.println("New due date: " + todo.getDueDate().toString());
-                    break;
-                case 4: // Add new (if it is a ListTodo)
-                    if (todo instanceof ListTodo)
-                        ((ListTodo) todo).addToCheckList(newNormalTodo());
-                case 5: // Show checklist (if it is a ListTodo)
-                    if (todo instanceof  ListTodo)
-                        processTodoChoice(((ListTodo) todo).getChecklist());
-            }
+            processTodoMenuChoice(todoOptionChoice, todo);
             printTodoInformation(todo);
+        }
+    }
+
+    private static void processTodoMenuChoice(int todoOptionChoice, BaseTodo todo) {
+        switch (todoOptionChoice) {
+            case 1: // Toggle completed
+                System.out.println(((todo.isCompleted()) ? "Marking uncompleted" : "Marking completed"));
+                todo.toggleCompleted();
+                break;
+            case 2: // Set priority
+                System.out.println("Current Priority: " + todo.getPriority().getPriority());
+                int priorityChoice = inputHelper.buildMenu("Choose a priority", priorityOptions);
+                if (priorityChoice == priorityOptions.length) // If back is chosen
+                    return;
+                else
+                    todo.setPriority(Priority.values()[priorityChoice - 1]);
+                break;
+            case 3: // Set due date
+                LocalDate date;
+                do {
+                    String dateInput = inputHelper.getString("Enter a date in the format DD-MM-YYYY", true);
+                    date = InputHelper.inputDate(dateInput);
+                } while (date == null);
+                todo.setDueDate(date);
+                System.out.println("New due date: " + todo.getDueDate().toString());
+                break;
+            case 4: // Add new (if it is a ListTodo)
+                if (todo instanceof ListTodo)
+                    ((ListTodo) todo).addToCheckList(newNormalTodo());
+                break;
+            case 5: // Show checklist (if it is a ListTodo)
+                if (todo instanceof  ListTodo)
+                    processTodoChoice(((ListTodo) todo).getChecklist());
+                break;
+            default:
         }
     }
 
