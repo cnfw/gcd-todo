@@ -19,7 +19,7 @@ public class TodoApp {
     private static InputHelper inputHelper;
     private static XMLHelper xmlHelper;
 
-    public static final String BACK = "<- Back";
+    private static final String BACK = "<- Back";
 
     private static ArrayList<BaseTodo> todoItems;
     private static String[] mainMenuOptions = new String[]{"New Todo", "Show due Todo's", "Show Todo's", "Show completed Todo's", "Exit"};
@@ -32,7 +32,7 @@ public class TodoApp {
         /*
          * CHANGE FILE PATH TO EXAMPLE XML FILE PROVIDED IN THE REPOSITORY
          */
-        xmlHelper = new XMLHelper("C:\\Users\\hp\\IdeaProjects\\gcd-todo\\gcd-todo.xml");
+        xmlHelper = new XMLHelper(/* Enter Full path of example XML file here */);
         inputHelper = new InputHelper(new Scanner(System.in));
         todoItems = xmlHelper.getTodoArray();
 
