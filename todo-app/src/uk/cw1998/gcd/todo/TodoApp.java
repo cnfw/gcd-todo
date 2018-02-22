@@ -26,7 +26,7 @@ public class TodoApp {
     private static String[] todoTypes = new String[]{"Normal Todo", "List Todo", BACK};
     private static String[] normalTodoOptions = new String[]{"Toggle completed", "Set priority", "Set due date", BACK};
     private static String[] listTodoOptions = new String[]{"Toggle completed", "Set priority", "Set due date", "Add item to checklist", "Show checklist", BACK};
-    private static String[] priorityOptions = new String[]{Priority.HIGH.getPriority(), Priority.MEDIUM.getPriority(), Priority.LOW.getPriority(), Priority.NONE.getPriority(), BACK};
+    private static String[] priorityOptions = new String[]{Priority.HIGH.getName(), Priority.MEDIUM.getName(), Priority.LOW.getName(), Priority.NONE.getName(), BACK};
 
     public static void main(String[] args) {
         /*
@@ -131,7 +131,7 @@ public class TodoApp {
                 todo.toggleCompleted();
                 break;
             case 2: // Set priority
-                System.out.println("Current Priority: " + todo.getPriority().getPriority());
+                System.out.println("Current Priority: " + todo.getPriority().getName());
                 int priorityChoice = inputHelper.buildMenu("Choose a priority", priorityOptions);
                 if (priorityChoice == priorityOptions.length) // If back is chosen
                     return;

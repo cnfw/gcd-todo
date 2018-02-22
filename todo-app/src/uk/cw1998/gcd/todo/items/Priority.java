@@ -2,13 +2,13 @@ package uk.cw1998.gcd.todo.items;
 
 public enum Priority {
     HIGH("High"), MEDIUM("Medium"), LOW("Low"), NONE("None");
-    private String priority;
+    private String name;
 
-    Priority(String priority) {
-        this.priority = priority;
+    Priority(String name) {
+        this.name = name;
     }
 
-    public String getPriority() {
-        return this.priority;
+    public String getName() {
+        return this.name;
     }
 }

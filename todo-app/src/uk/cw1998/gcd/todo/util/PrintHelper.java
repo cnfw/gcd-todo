@@ -20,7 +20,7 @@ public class PrintHelper {
         System.out.println("Selected Todo: " + todo.getTitle());
         System.out.println("Description: " + todo.getDescription());
         System.out.println("Completed: " + ((todo.isCompleted()) ? "Yes" : "No"));
-        System.out.println("Priority: " + todo.getPriority().getPriority());
+        System.out.println("Priority: " + todo.getPriority().getName());
         System.out.println("Due date: " + todo.getUKDate());
 
         if (todo instanceof ListTodo)

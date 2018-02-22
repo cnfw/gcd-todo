@@ -52,11 +52,11 @@ public class BaseTodo {
     }
 
     public void setTitle(String newTitle) {
-        title = newTitle;
+        title = (newTitle != null) ? newTitle : "";
     }
 
     public void setDescription(String newDescription) {
-        description = newDescription;
+        description = (newDescription != null) ? newDescription : "";
     }
 
     /**
@@ -87,7 +87,7 @@ public class BaseTodo {
     }
 
     public void setPriority(Priority priority) {
-        this.priority = priority;
+        this.priority = (priority != null) ? priority : Priority.NONE;
     }
 
     public void setDueDate(LocalDate dueDate) {

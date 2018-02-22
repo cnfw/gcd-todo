@@ -43,7 +43,12 @@ public class ListTodo extends BaseTodo {
         return temp;
     }
 
-    public void addToCheckList(BaseTodo todo) {
-        checklist.add(todo);
+    /**
+     * Add a {@link BaseTodo} item to the checklist if it is not already in the list
+     * @param todoItem item to add to the checklist
+     */
+    public void addToCheckList(BaseTodo todoItem) {
+        if(todoItem != null && !checklist.contains(todoItem))
+            checklist.add(todoItem);
     }
 }

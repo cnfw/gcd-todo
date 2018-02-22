@@ -14,6 +14,9 @@ public class ListHelper {
      */
     public static String[] getListOfTodoTitles(ArrayList<BaseTodo> todoItems) {
         ArrayList<String> temp = new ArrayList<>();
+        if (todoItems == null)
+            return new String[]{"<- Back"};
+
         for (BaseTodo todo : todoItems)
             temp.add(todo.getTitle());
 
@@ -33,6 +36,9 @@ public class ListHelper {
      */
     public static ArrayList<BaseTodo> getArrayListOfDueTodoItems(ArrayList<BaseTodo> todoItems) {
         ArrayList<BaseTodo> temp = new ArrayList<>();
+        if (todoItems == null)
+            return temp;
+
         for (BaseTodo todo : todoItems)
             if (!todo.isCompleted() && todo.isDue())
                 temp.add(todo);
@@ -48,6 +54,8 @@ public class ListHelper {
      */
     public static ArrayList<BaseTodo> getArrayListOfTodoItems(ArrayList<BaseTodo> todoItems, boolean completed) {
         ArrayList<BaseTodo> temp = new ArrayList<>();
+        if (todoItems == null)
+            return temp;
         for (BaseTodo todo : todoItems)
             if (todo.isCompleted() == completed)
                 temp.add(todo);

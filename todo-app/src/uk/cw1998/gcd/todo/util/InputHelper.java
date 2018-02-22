@@ -105,7 +105,10 @@ public class InputHelper {
      * @return object matching the date entered or null if the input was invalid
      */
     public static LocalDate inputDate(String dateEntered) {
-        String[] splitDate = dateEntered.split("/|-");
+        if (dateEntered == null)
+            return null;
+
+        String[] splitDate = dateEntered.split("[/\\-]");
         try {
             int day = Integer.parseInt(splitDate[0]);
             int month = Integer.parseInt(splitDate[1]);

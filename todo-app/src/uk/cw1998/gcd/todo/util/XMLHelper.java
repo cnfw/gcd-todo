@@ -29,7 +29,7 @@ public class XMLHelper {
 
     public XMLHelper(File xmlFile) {
         this();
-        xmlFile = xmlFile;
+        this.xmlFile = xmlFile;
     }
 
     private XMLHelper() {
@@ -95,21 +95,21 @@ public class XMLHelper {
      * Parses a {@link BaseTodo} object into an Element suitable for storage in a {@link NodeList}
      * If {@link BaseTodo} is a {@link ListTodo} object, recursively call to add it's checklist
      * @param document document to create element with
-     * @param todo the object to be parsed
+     * @param todoItem the object to parse
      * @return resulting {@link Element}
      * @see #writeTodoArrayToFile(ArrayList)
      */
-    private static Element buildElement(Document document, BaseTodo todo) {
-        Element newTodo = document.createElement(todo.getTagName());
+    private static Element buildElement(Document document, BaseTodo todoItem) {
+        Element newTodo = document.createElement(todoItem.getTagName());
 
-        newTodo.setAttribute("id", String.valueOf(todo.getId()));
-        newTodo.setAttribute("title", todo.getTitle());
-        newTodo.setAttribute("description", todo.getDescription());
-        newTodo.setAttribute("completed", String.valueOf(todo.isCompleted()));
-        newTodo.setAttribute("due", todo.getUKDate());
+        newTodo.setAttribute("id", String.valueOf(todoItem.getId()));
+        newTodo.setAttribute("title", todoItem.getTitle());
+        newTodo.setAttribute("description", todoItem.getDescription());
+        newTodo.setAttribute("completed", String.valueOf(todoItem.isCompleted()));
+        newTodo.setAttribute("due", todoItem.getUKDate());
 
-        if (todo instanceof ListTodo)
-            for (BaseTodo checkListTodo : ((ListTodo) todo).getChecklist())
+        if (todoItem instanceof ListTodo)
+            for (BaseTodo checkListTodo : ((ListTodo) todoItem).getChecklist())
                 newTodo.appendChild(buildElement(document, checkListTodo));
 
         return newTodo;
